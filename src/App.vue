@@ -1,19 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="pomodoro_configuration">
+      <h2>Configuração do pomodoro</h2>
+      <input type="text" placeholder="Minutos" />
+      <input type="text" placeholder="Pausa" />
+      <input type="text" name placeholder="Pausa longa" />
+    </div>
+    <pomodoro-timer />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PomodoroTimer from "./components/PomodoroTimer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    PomodoroTimer
   }
-}
+};
 </script>
 
 <style>

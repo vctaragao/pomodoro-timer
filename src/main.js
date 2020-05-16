@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import VueCookies from 'vue-cookies'
+
+Vue.use(VueCookies);
+
+// set default config
+Vue.$cookies.config('7d')
 
 Vue.config.productionTip = false
 
