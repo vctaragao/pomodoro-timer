@@ -1,22 +1,20 @@
 <template>
   <div id="app">
-    <div class="pomodoro_configuration">
-      <h2>Configuração do pomodoro</h2>
-      <input type="text" placeholder="Minutos" />
-      <input type="text" placeholder="Pausa" />
-      <input type="text" name placeholder="Pausa longa" />
-    </div>
+    <div class="pomodoro_configuration"></div>
+    <pomodoro-configuration />
     <pomodoro-timer />
   </div>
 </template>
 
 <script>
 import PomodoroTimer from "./components/PomodoroTimer.vue";
+import PomodoroConfiguration from "./components/PomodoroConfiguration.vue";
 
 export default {
   name: "App",
   components: {
-    PomodoroTimer
+    PomodoroTimer,
+    PomodoroConfiguration
   }
 };
 </script>

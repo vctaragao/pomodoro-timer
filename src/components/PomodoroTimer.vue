@@ -3,7 +3,8 @@
     <div class="timer center">
       <span>{{clock}}</span>
     </div>
-    <button @click="startAnimation()">Play</button>
+    <button @click="toggleTimer()">{{start_button}}</button>
+    <button @click="resetTimer()">Resetar</button>
   </div>
 </template>
 
@@ -14,35 +15,44 @@ export default {
   data() {
     return {
       timer: {
-        minutes: "1",
-        seconds: 60
+        minutes: 25,
+        seconds: 60,
+        current_time: 0
       },
       pomodoro: {
         session: 1,
-        short_break: 2,
-        long_break: "3"
+        short_break: 5,
+        long_break: 25
       },
       animation: null,
       newSession: false,
       is_long_break_timer: false,
       is_short_break_timer: false,
-      test: 0
+      is_pomodoro_running: false
     };
   },
   methods: {
     checkCookies() {
-      if (this.$cookies.isKey("minutes"))
-        this.timer.minutes = this.$cookies.get("minutes");
-      if (this.$cookies.isKey("pomodoro_session"))
-        this.pomodoro.session = this.$cookies.get("pomodoro_session");
-      if (this.$cookies.isKey("short_break"))
-        this.pomodoro.short_break = this.$cookies.short_break;
+      if (this.$cookies.isKey("pomodoro_conf")) {
+        this.timer.minutes = this.$cookies.get("pomodoro_conf").minutes;
+        this.pomodoro.short_break = this.$cookies.get(
+          "pomodoro_conf"
+        ).short_break;
+        this.pomodoro.long_break = this.$cookies.get(
+          "pomodoro_conf"
+        ).long_break;
+      }
+    },
+    toggleTimer() {
+      if (this.is_pomodoro_running) this.stopTimer();
+      else this.startTimer();
     },
     hasPomodoroFinished() {
       if (this.pomodoro.session <= 4) {
         return false;
       }
       this.pomodoro.session = 1;
+      this.is_pomodoro_running = false;
       return true;
     },
     startLongBreak() {
@@ -55,14 +65,21 @@ export default {
     startNewPomodoro() {
       this.timer.minutes = 1;
     },
-    stopTimer() {
-      window.clearInterval(this.t);
-    },
-    startAnimation() {
-      this.animation.set(0);
+    startTimer() {
+      if (this.timer.current_time) this.animation.set(this.timer.current_time);
+      else {
+        this.timer.current_time = 0;
+        this.animation.set(0);
+      }
       this.animation.animate(1);
+      this.is_pomodoro_running = true;
     },
-    createProgresbar(duration = 1) {
+    stopTimer() {
+      this.timer.current_time = this.animation.value();
+      this.animation.set(this.timer.current_time);
+      this.is_pomodoro_running = false;
+    },
+    createProgresbar(duration = 25) {
       this.animation = new ProgressBar.Circle(".timer", {
         color: "#000000",
         duration: parseInt(duration) * 60000,
@@ -82,7 +99,21 @@ export default {
       else this.timer.minutes;
 
       this.createProgresbar(this.timer.minutes);
-      this.startAnimation();
+      this.startTimer();
+    },
+    resetTimer() {
+      this.animation.set(1);
+      this.timer.minutes = this.$cookies.isKey("pomodoro_conf")
+        ? this.$cookies.get("pomodoro_conf").minutes
+        : 25;
+      this.pomodoro.short_break = this.$cookies.isKey("pomodoro_conf")
+        ? this.$cookies.get("pomodoro_conf").short_break
+        : 5;
+      this.pomodoro.long_break = this.$cookies.isKey("pomodoro_conf")
+        ? this.$cookies.get("pomodoro_conf").long_break
+        : 25;
+      this.timer.current_time = 0;
+      this.is_pomodoro_running = false;
     }
   },
   computed: {
@@ -94,6 +125,9 @@ export default {
       let m =
         this.timer.minutes < 10 ? "0" + this.timer.minutes : this.timer.minutes;
       return m + ":" + s;
+    },
+    start_button() {
+      return this.is_pomodoro_running ? "Pausar" : "Começar";
     }
   },
   watch: {
@@ -127,7 +161,7 @@ export default {
   },
   mounted() {
     this.checkCookies();
-    this.createProgresbar();
+    this.createProgresbar(this.timer.minutes);
     this.animation.set(1);
   }
 };
