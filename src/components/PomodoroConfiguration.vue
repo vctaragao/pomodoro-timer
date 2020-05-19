@@ -45,4 +45,14 @@ export default {
 </script>
 
 <style>
+.pomodoro_configuration_container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: auto;
+}
+
+input[type="text"] {
+  padding: 0.2rem 0.5rem;
+}
 </style>

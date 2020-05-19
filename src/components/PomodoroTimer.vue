@@ -169,8 +169,20 @@ export default {
 
 <style>
 .timer {
-  width: 20%;
+  width: 100%;
   position: relative;
+}
+
+.pomodoro_timer_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20%;
+}
+
+.pomodoro_timer_container button {
+  cursor: pointer;
 }
 
 .timer span {
