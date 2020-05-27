@@ -1,13 +1,24 @@
 <template>
   <div class="pomodoro_configuration_container">
-    <h2>Configuração do pomodoro</h2>
-    <label for="min">Minutos por sessão</label>
-    <input id="min" type="text" :placeholder="minutes + 'min'" v-model="minutes" />
-    <label for="short">Pausa pequena</label>
-    <input id="short" type="text" placeholder="Pausa" v-model="short_break" />
-    <label for>Pausa longa</label>
-    <input type="text" name placeholder="Pausa longa" v-model="long_break" />
-    <button @click="updatePomodoroConfiguration()">Atualizar pomodoro</button>
+    <h4>Configuração do pomodoro</h4>
+    <form>
+      <div class="input-field">
+        <label for="min">Minutos por sessão</label>
+        <input id="min" type="text" :placeholder="minutes + 'min'" v-model="minutes" />
+      </div>
+      <div class="input-field">
+        <label for="short">Pausa pequena</label>
+        <input id="short" type="text" placeholder="Pausa" v-model="short_break" />
+      </div>
+      <div class="input-field">
+        <label for>Pausa longa</label>
+        <input type="text" name placeholder="Pausa longa" v-model="long_break" />
+      </div>
+      <button
+        class="btn-small waves-effect waves-light"
+        @click="updatePomodoroConfiguration()"
+      >Atualizar pomodoro</button>
+    </form>
   </div>
 </template>
 
@@ -48,8 +59,23 @@ export default {
 .pomodoro_configuration_container {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  margin: auto;
+  width: 56%;
+  margin-left: 5rem;
+  margin-top: 2rem;
+}
+
+.pomodoro_configuration_container form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.pomodoro_configuration_container form button {
+  align-self: center;
+}
+
+form input {
+  color: white;
 }
 
 input[type="text"] {

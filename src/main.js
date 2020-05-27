@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueCookies from 'vue-cookies'
+import 'materialize-css'
+import 'materialize-css/dist/css/materialize.css'
+import 'material-design-icons/iconfont/material-icons.css'
 
 Vue.use(VueCookies);
 

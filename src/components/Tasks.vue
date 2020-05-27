@@ -1,17 +1,22 @@
 <template>
   <div class="tasks_container">
-    <h2>Vitórias para o dia!</h2>
-    <div class="task_group">
-      <input type="text" v-model="task.name" placeholder="Adicionar tarefa" />
-      <button @click="addTask()">Adicionar Tarefa</button>
-    </div>
-
-    <div v-if="task" class="tasks">
-      <div v-for="task in tasks" :key="task.id" class="task">
-        <span>{{task.name}}</span>
-        <span @click="removeTask(task)">Remove</span>
+    <h4>Tarefas do dia</h4>
+    <form @submit.prevent>
+      <div class="input-field">
+        <input type="text" v-model="task.name" placeholder="Adicionar tarefa" />
+        <button class="btn" @click="addTask()">Adicionar Tarefa</button>
       </div>
-    </div>
+    </form>
+
+    <form v-if="tasks.length" class="tasks" @submit.prevent>
+      <p v-for="task in tasks" :key="task.id" class="task" @change="toggleTask(task)">
+        <label>
+          <input type="checkbox" :checked="task.completed" />
+          <span :class="{'completed': task.completed}">{{task.name}}</span>
+          <span @click="removeTask(task)" class="material-icons">delete</span>
+        </label>
+      </p>
+    </form>
   </div>
 </template>
 
@@ -23,7 +28,8 @@ export default {
       tasks: [],
       task: {
         id: null,
-        name: ""
+        name: "",
+        completed: false
       },
       current_task_id: 0,
       tasks_ids: []
@@ -34,12 +40,17 @@ export default {
       ++this.current_task_id;
       this.task.id = this.current_task_id;
       this.tasks.push({ ...this.task });
-      console.log(this.tasks);
       this.$cookies.set("tasks", JSON.stringify(this.tasks));
+      this.task.name = "";
     },
     removeTask(task) {
       this.tasks.splice(this.tasks.indexOf(task), 1);
       this.$cookies.set("tasks", JSON.stringify(this.tasks));
+    },
+    toggleTask(task) {
+      const task_index = this.tasks.indexOf(task);
+      if (task_index > -1)
+        this.tasks[task_index].completed = !this.tasks[task_index].completed;
     }
   },
   mounted() {
@@ -55,9 +66,47 @@ export default {
 </script>
 
 <style>
-.winning_tasks_container {
+.tasks_container {
+  margin-left: auto;
+  margin-right: 5rem;
+  width: 70%;
+}
+
+.tasks_container form .input-field {
   display: flex;
-  flex-direction: column;
-  margin: auto;
+  align-items: center;
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+}
+
+.tasks_container form button {
+  margin-left: 1rem;
+  width: 60%;
+}
+
+.tasks_container .tasks {
+  margin-top: 1rem;
+}
+
+.task {
+  display: flex;
+  justify-content: center;
+}
+
+.task label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.task label .material-icons {
+  margin-left: 1rem;
+  font-size: 1.25rem;
+}
+
+.task label .completed {
+  color: #d1d1d1;
+  text-decoration: line-through;
 }
 </style>

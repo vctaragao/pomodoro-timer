@@ -44,6 +44,9 @@ export default {
 
 <style>
 .inspiring_quotes_container {
-  margin: auto;
+  width: 70%;
+  margin-top: auto;
+  margin-bottom: 5rem;
+  margin-left: 5rem;
 }
 </style>

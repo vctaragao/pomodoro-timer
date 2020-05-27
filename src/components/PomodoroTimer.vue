@@ -3,8 +3,13 @@
     <div class="timer center">
       <span>{{clock}}</span>
     </div>
-    <button @click="toggleTimer()">{{start_button}}</button>
-    <button @click="resetTimer()">Resetar</button>
+    <button class="btn waves-effect waves-light" @click="toggleTimer()">
+      <span v-if="is_pomodoro_running" class="material-icons">pause</span>
+      <span v-else class="material-icons">play_arrow</span>
+    </button>
+    <button class="btn" @click="resetTimer()">
+      <span class="material-icons">stop</span>
+    </button>
   </div>
 </template>
 
@@ -81,7 +86,8 @@ export default {
     },
     createProgresbar(duration = 25) {
       this.animation = new ProgressBar.Circle(".timer", {
-        color: "#000000",
+        color: "#16CEAD",
+        strokeWidth: 3,
         duration: parseInt(duration) * 60000,
         step: (state, animation) => {
           let seconds_past = Math.floor(duration * 60 * animation.value());
@@ -125,9 +131,6 @@ export default {
       let m =
         this.timer.minutes < 10 ? "0" + this.timer.minutes : this.timer.minutes;
       return m + ":" + s;
-    },
-    start_button() {
-      return this.is_pomodoro_running ? "Pausar" : "Começar";
     }
   },
   watch: {
@@ -171,6 +174,7 @@ export default {
 .timer {
   width: 100%;
   position: relative;
+  margin-bottom: 0.5rem;
 }
 
 .pomodoro_timer_container {
@@ -181,8 +185,23 @@ export default {
   width: 20%;
 }
 
-.pomodoro_timer_container button {
-  cursor: pointer;
+.pomodoro_timer_container .btn {
+  margin-right: 1rem;
+  border-radius: 50%;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+}
+
+.pomodoro_timer_container .btn:last-child {
+  margin-right: 0;
+}
+
+.pomodoro_timer_container .material-icons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .timer span {
@@ -190,6 +209,7 @@ export default {
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
+  font-size: 5rem;
 }
 
 .center {
