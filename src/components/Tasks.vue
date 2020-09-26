@@ -7,16 +7,28 @@
         <button class="btn" @click="addTask()">Adicionar Tarefa</button>
       </div>
     </form>
-
-    <form v-if="tasks.length" class="tasks" @submit.prevent>
-      <p v-for="task in tasks" :key="task.id" class="task" @change="toggleTask(task)">
-        <label>
-          <input type="checkbox" :checked="task.completed" />
-          <span :class="{'completed': task.completed}">{{task.name}}</span>
-          <span @click="removeTask(task)" class="material-icons">delete</span>
-        </label>
-      </p>
-    </form>
+    <transition name="fade-in">
+      <form v-if="tasks.length" class="tasks" @submit.prevent>
+        <transition-group name="fade-in" appear>
+          <p
+            v-for="task in tasks"
+            :key="task.id"
+            class="task"
+            @change="toggleTask(task)"
+          >
+            <label>
+              <input type="checkbox" :checked="task.completed" />
+              <span :class="{ completed: task.completed }">{{
+                task.name
+              }}</span>
+              <span @click="removeTask(task)" class="material-icons"
+                >delete</span
+              >
+            </label>
+          </p>
+        </transition-group>
+      </form>
+    </transition>
   </div>
 </template>
 
@@ -29,10 +41,10 @@ export default {
       task: {
         id: null,
         name: "",
-        completed: false
+        completed: false,
       },
       current_task_id: 0,
-      tasks_ids: []
+      tasks_ids: [],
     };
   },
   methods: {
@@ -51,17 +63,17 @@ export default {
       const task_index = this.tasks.indexOf(task);
       if (task_index > -1)
         this.tasks[task_index].completed = !this.tasks[task_index].completed;
-    }
+    },
   },
   mounted() {
     if (this.$cookies.isKey("tasks")) {
       this.tasks = JSON.parse(this.$cookies.get("tasks"));
       if (this.tasks.length)
         this.current_task_id = this.tasks
-          .map(task => task.id)
+          .map((task) => task.id)
           .reduce((a, b) => Math.max(a, b));
     }
-  }
+  },
 };
 </script>
 
@@ -108,5 +120,29 @@ export default {
 .task label .completed {
   color: #d1d1d1;
   text-decoration: line-through;
+}
+
+.fade-in-enter {
+  opacity: 0;
+}
+
+.fade-in-enter-active {
+  transition: opacity 1s;
+}
+
+.fade-in-enter-to {
+  opacity: 1;
+}
+
+.fade-in-leave {
+  opacity: 1;
+}
+
+.fade-in-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-in-leave-to {
+  opacity: 0;
 }
 </style>

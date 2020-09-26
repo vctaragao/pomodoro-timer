@@ -4,7 +4,9 @@
     <winning-tasks />
     <inspiring-quotes />
     <task />
-    <pomodoro-timer />
+    <transition name="fade" appear>
+      <pomodoro-timer />
+    </transition>
   </div>
 </template>
 
@@ -17,13 +19,21 @@ import Task from "./components/Tasks.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      show: false,
+    };
+  },
   components: {
     PomodoroTimer,
     PomodoroConfiguration,
     WinningTasks,
     InspiringQuotes,
-    Task
-  }
+    Task,
+  },
+  created() {
+    this.show = true;
+  },
 };
 </script>
 
@@ -77,5 +87,17 @@ h6 {
 .material-icons {
   cursor: pointer;
   transition: 0.5s;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition: opacity 2s;
+}
+
+.fade-enter-to {
+  opacity: 1;
 }
 </style>
