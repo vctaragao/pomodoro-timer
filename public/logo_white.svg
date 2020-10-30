@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg40"
+   width="34.175999"
+   height="78.720001"
+   viewBox="0 0 34.175999 78.720001"
+   sodipodi:docname="logo_white.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <metadata
+     id="metadata46">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs44">
+    <linearGradient
+       id="linearGradient2867"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop2865" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="745"
+     id="namedview42"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     inkscape:zoom="11.313709"
+     inkscape:cx="40.087276"
+     inkscape:cy="16.209247"
+     inkscape:window-x="1358"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g48" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="Image"
+     id="g48"
+     style="display:inline">
+    <path
+       id="path2895"
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 26.473273,0.0631624 17.006476,27.053397 7.4537416,0.1686311 H 0.13342862 l -0.103515,39.2871099 14.10156238,39.154297 5.556641,0.0039 14.240234,-39.21875 V 0.1686311 Z M 30.06507,1.9889436 30.176398,39.459647 16.787726,75.260429 3.8326476,39.504569 3.8619476,2.0651155 14.221323,31.283866 l 5.486328,0.0059 z" />
+  </g>
+</svg>
