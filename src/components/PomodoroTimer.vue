@@ -22,7 +22,6 @@
 </template>
 
 <script>
-const ProgressBar = require("progressbar.js");
 export default {
   name: "PomodoroTimer",
   data() {
@@ -38,7 +37,8 @@ export default {
         short_break: 5,
         long_break: 25,
       },
-      animation: null,
+      browser: "",
+      notification: null,
       is_long_break_timer: false,
       is_short_break_timer: false,
       is_pomodoro_running: false,
@@ -49,6 +49,22 @@ export default {
     };
   },
   methods: {
+    requestNotificationPermission() {
+      if ("Notification" in window) {
+        // Otherwise, we need to ask the user for permission
+        if (
+          Notification.permission !== "denied" &&
+          Notification.permission !== "granted"
+        ) {
+          Notification.requestPermission().then(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              console.log(permission);
+            }
+          });
+        }
+      }
+    },
     checkCookies() {
       if (this.$cookies.isKey("pomodoro_conf")) {
         this.pomodoro.session_period = this.$cookies.get(
@@ -64,10 +80,6 @@ export default {
       }
     },
     startStepCounter() {
-      setTimeout(() => {
-        this.animation.animate(1);
-      }, 1000);
-
       this.step_counter = setInterval(() => {
         this.timer.seconds--;
         if (this.timer.seconds < 1) {
@@ -80,6 +92,7 @@ export default {
         this.pauseTimer();
       } else {
         this.startTimer();
+        this.requestNotificationPermission();
       }
     },
     hasPomodoroFinished() {
@@ -88,13 +101,11 @@ export default {
     startNewSession() {
       ++this.pomodoro.session;
       this.timer.minutes = this.pomodoro.session_period;
+      this.generateNotification("Foco!", "Vamos voltar ao trabalho");
     },
     startTimer() {
-      if (this.timer.current_time) {
-        this.animation.set(this.timer.current_time);
-      } else {
+      if (!this.timer.current_time) {
         this.timer.current_time = 0;
-        this.animation.set(0);
       }
       this.startStepCounter();
       this.is_pomodoro_running = true;
@@ -103,45 +114,39 @@ export default {
     },
     pauseTimer() {
       this.is_pomodoro_running = false;
-      this.timer.current_time = this.animation.value();
-      this.animation.set(this.timer.current_time);
       clearInterval(this.step_counter);
     },
     stopTimer() {
       this.is_pomodoro_running = false;
-      this.animation.set(0);
       clearInterval(this.step_counter);
-    },
-    createProgresbar(duration) {
-      return new ProgressBar.Circle(".timer", {
-        color: "#16CEAD",
-        strokeWidth: 3,
-        easing: "linear",
-        duration: parseInt(duration) * 60000,
-      });
     },
     resetTimer() {
       if (this.hasPomodoroFinished()) {
         this.finished_audio.play();
       }
-      this.animation.destroy();
       this.timer.minutes = this.pomodoro.session_period;
       this.pomodoro.session = 1;
       this.is_long_break_timer = false;
       this.is_short_break_timer = false;
       this.timer.current_time = 0;
       this.is_pomodoro_running = false;
-      this.animation = this.createProgresbar(this.timer.minutes);
-      this.animation.set(1);
       clearInterval(this.step_counter);
       this.timer.seconds = 60;
       this.is_reseted = true;
     },
     startShortBreak() {
       this.timer.minutes = this.pomodoro.short_break;
+      this.generateNotification("Pausa pequena", "Vá beber uma água");
     },
     startLongBreak() {
       this.timer.minutes = this.pomodoro.long_break;
+      this.generateNotification("Pausa longa", "Você merece um descanço");
+    },
+    generateNotification(title, body) {
+      new Notification(title, {
+        body: body,
+        icon: window.location.origin + "/logo_white.svg",
+      });
     },
   },
   computed: {
@@ -183,8 +188,6 @@ export default {
           }
         }
         if (!this.is_reseted) {
-          this.animation.destroy();
-          this.animation = this.createProgresbar(this.timer.minutes);
           this.startTimer();
         } else {
           this.is_reseted = false;
@@ -199,11 +202,25 @@ export default {
   },
   mounted() {
     this.checkCookies();
-    this.animation = this.createProgresbar(this.timer.minutes);
-    this.animation.set(1);
-
     this.notification_audio = new Audio(require("../assets/notification.mp3"));
     this.finished_audio = new Audio(require("../assets/finished.mp3"));
+
+    let nav = navigator.userAgent.toLowerCase();
+
+    if (nav.indexOf("mozilla") != -1) {
+      if (nav.indexOf("firefox") != -1) {
+        this.browser = "firefox";
+      } else if (nav.indexOf("firefox") != -1) {
+        this.browser = "mozilla";
+      } else if (nav.indexOf("chrome") != -1) {
+        this.browser = "chrome";
+      }
+    }
+    console.log(this.browser);
+
+    if (this.browser === "chrome") {
+      this.requestNotificationPermission();
+    }
   },
 };
 </script>
@@ -243,10 +260,6 @@ export default {
 }
 
 .timer span {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
   font-size: 5rem;
 }
 
